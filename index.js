@@ -1,22 +1,27 @@
-// server/index.js
 const express = require('express');
 const cors = require('cors');
-const authRoutes = require('./routes/auth');
+const dotenv = require('dotenv');
+const authRoutes = require('./routes/auth'); // Pastikan ini mengarah ke file auth.js
+
+// Panggil konfigurasi dotenv
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors()); // Mengizinkan request dari frontend
-app.use(express.json()); // Biar bisa baca req.body format JSON
+app.use(cors());
+app.use(express.json());
 
 // Routes
-app.use('/api/auth', authRoutes); // Semua rute di auth.js akan diawali /api/auth
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.send('Server Backend Aktif!');
 });
 
+// Langsung jalankan server
 app.listen(PORT, () => {
   console.log(`Server berjalan di http://localhost:${PORT}`);
+  console.log('Terhubung ke database MySQL:', process.env.DB_NAME);
 });
